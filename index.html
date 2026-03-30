@@ -1,753 +1,565 @@
-<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ps">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>د پښتو ټایپنگ ماسټر - PC Version</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            user-select: none;
-        }
+<meta charset="UTF-8">
+<title>پښتو ټايپنګ زده کړه</title>
 
-        body {
-            font-family: 'Segoe UI', 'Noto Nastaliq Urdu', 'Arial', sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            min-height: 100vh;
-            padding: 20px;
-            direction: rtl;
-        }
+<style>
 
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-            overflow: hidden;
-        }
+body{
+margin:0;
+font-family:sans-serif;
+background:#0f172a;
+color:white;
+text-align:center;
+}
 
-        /* Header */
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 25px;
-            text-align: center;
-        }
+h1{margin-top:20px;}
 
-        .header h1 {
-            font-size: 2.2em;
-            margin-bottom: 8px;
-        }
+#startBtn{
+font-size:32px;
+padding:20px 70px;
+background:#22c55e;
+border:none;
+border-radius:10px;
+color:white;
+cursor:pointer;
+margin-top:30px;
+}
 
-        .header p {
-            font-size: 1em;
-            opacity: 0.95;
-        }
+/* MENU */
 
-        /* Main Content */
-        .main-content {
-            padding: 30px;
-        }
+#menuBtn{
+position:absolute;
+top:15px;
+right:20px;
+font-size:28px;
+cursor:pointer;
+display:none;
+}
 
-        /* Stats Panel */
-        .stats-panel {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
+#menu{
+position:absolute;
+top:50px;
+right:20px;
+width:260px;
+background:#1e293b;
+border-radius:10px;
+padding:15px;
+display:none;
+max-height:500px;
+overflow:auto;
+}
 
-        .stat-card {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
-        }
+.levelBtn{
+width:100%;
+margin:4px 0;
+padding:6px;
+background:#334155;
+border:none;
+color:white;
+border-radius:5px;
+cursor:pointer;
+}
 
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
+.stageBtn{
+width:100%;
+margin:2px 0;
+padding:4px;
+background:#475569;
+border:none;
+color:white;
+border-radius:5px;
+font-size:13px;
+cursor:pointer;
+}
 
-        .stat-card h3 {
-            color: #4a5568;
-            font-size: 0.9em;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+#resetBtn{
+margin-top:10px;
+width:100%;
+padding:8px;
+background:#ef4444;
+border:none;
+color:white;
+border-radius:6px;
+cursor:pointer;
+}
 
-        .stat-card .value {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: #2d3748;
-        }
+/* MAIN */
 
-        .stat-card .unit {
-            font-size: 0.8em;
-            color: #718096;
-        }
+#main{
+display:none;
+margin-top:20px;
+}
 
-        /* Level Progress */
-        .level-section {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            color: white;
-        }
+#stageInfo{
+font-size:26px;
+margin-bottom:10px;
+}
 
-        .level-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
+.stats{
+font-size:24px;
+margin:10px;
+}
 
-        .level-badge {
-            background: rgba(255,255,255,0.2);
-            padding: 8px 20px;
-            border-radius: 25px;
-            font-size: 1.2em;
-            font-weight: bold;
-        }
+#lessonText{
+font-size:70px;
+letter-spacing:8px;
+margin:30px;
+}
 
-        .progress-bar-container {
-            background: rgba(255,255,255,0.3);
-            border-radius: 25px;
-            overflow: hidden;
-            height: 30px;
-        }
+#typedText{
+font-size:35px;
+margin-top:10px;
+color:#38bdf8;
+}
 
-        .progress-bar {
-            background: #ffd700;
-            height: 100%;
-            transition: width 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #333;
-            font-weight: bold;
-            font-size: 0.9em;
-        }
+/* KEYBOARD */
 
-        /* Target Word */
-        .target-section {
-            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-            padding: 40px;
-            border-radius: 20px;
-            text-align: center;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
+.keyboard{
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:8px;
+margin-top:20px;
+}
 
-        .target-label {
-            font-size: 1.1em;
-            color: #2d3748;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
+.row{
+display:flex;
+gap:6px;
+}
 
-        .target-word {
-            font-size: 4.5em;
-            font-weight: bold;
-            color: #2c3e50;
-            letter-spacing: 5px;
-            word-break: break-word;
-            font-family: 'Noto Nastaliq Urdu', 'Arial', sans-serif;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
+.key{
+background:#e5e7eb;
+color:black;
+padding:12px 16px;
+border-radius:6px;
+font-size:20px;
+min-width:30px;
+text-align:center;
+}
 
-        /* Input Area */
-        .input-area {
-            margin-bottom: 25px;
-        }
+.key.active{
+background:#22c55e;
+color:white;
+}
 
-        #userInput {
-            width: 100%;
-            padding: 20px;
-            font-size: 2em;
-            text-align: center;
-            border: 3px solid #e2e8f0;
-            border-radius: 15px;
-            font-family: 'Noto Nastaliq Urdu', 'Arial', sans-serif;
-            direction: rtl;
-            background: #fefefe;
-            transition: all 0.3s;
-            font-weight: 500;
-        }
+.correct{
+color:#22c55e;
+}
 
-        #userInput:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        /* Message */
-        .message {
-            text-align: center;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            font-size: 1.1em;
-            font-weight: bold;
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateY(-20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .message.success {
-            background: #48bb78;
-            color: white;
-        }
-
-        .message.error {
-            background: #f56565;
-            color: white;
-        }
-
-        .message.info {
-            background: #4299e1;
-            color: white;
-        }
-
-        /* Virtual Keyboard - PC Optimized */
-        .keyboard {
-            background: #2d3748;
-            padding: 25px;
-            border-radius: 15px;
-            margin-top: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
-
-        .keyboard-row {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-        }
-
-        .key {
-            background: #f7fafc;
-            border: none;
-            padding: 12px 18px;
-            font-size: 1.2em;
-            font-weight: bold;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.2s;
-            min-width: 55px;
-            text-align: center;
-            font-family: 'Noto Nastaliq Urdu', 'Arial', sans-serif;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            color: #2d3748;
-        }
-
-        .key:hover {
-            background: #667eea;
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-
-        .key:active {
-            transform: translateY(0);
-        }
-
-        .key.special {
-            background: #48bb78;
-            color: white;
-            font-weight: bold;
-            min-width: 100px;
-        }
-
-        .key.special:hover {
-            background: #38a169;
-        }
-
-        .key.wide {
-            min-width: 120px;
-        }
-
-        /* Control Buttons */
-        .control-buttons {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-            justify-content: center;
-        }
-
-        .btn {
-            padding: 12px 25px;
-            font-size: 1em;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: bold;
-            font-family: inherit;
-        }
-
-        .btn-primary {
-            background: #4299e1;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #3182ce;
-            transform: translateY(-2px);
-        }
-
-        .btn-danger {
-            background: #f56565;
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background: #e53e3e;
-            transform: translateY(-2px);
-        }
-
-        /* Keyboard Shortcuts Hint */
-        .shortcuts {
-            margin-top: 20px;
-            text-align: center;
-            padding: 12px;
-            background: #edf2f7;
-            border-radius: 10px;
-            font-size: 0.85em;
-            color: #4a5568;
-        }
-
-        .shortcuts kbd {
-            background: #2d3748;
-            color: white;
-            padding: 3px 8px;
-            border-radius: 5px;
-            font-family: monospace;
-            margin: 0 3px;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .main-content {
-                padding: 20px;
-            }
-            
-            .target-word {
-                font-size: 2.5em;
-            }
-            
-            #userInput {
-                font-size: 1.5em;
-                padding: 15px;
-            }
-            
-            .key {
-                padding: 8px 12px;
-                min-width: 45px;
-                font-size: 1em;
-            }
-            
-            .stat-card .value {
-                font-size: 1.8em;
-            }
-        }
-    </style>
+</style>
 </head>
+
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🎯 د پښتو ټایپنگ ماسټر</h1>
-            <p>هر توری فشار کړئ او سمدلاسه ټایپنگ پیل کړئ!</p>
-        </div>
 
-        <div class="main-content">
-            <div class="stats-panel">
-                <div class="stat-card">
-                    <h3>⭐ ټول نمرې</h3>
-                    <div class="value" id="score">0</div>
-                </div>
-                <div class="stat-card">
-                    <h3>✅ سم جوابونه</h3>
-                    <div class="value" id="correct">0</div>
-                </div>
-                <div class="stat-card">
-                    <h3>❌ غلط جوابونه</h3>
-                    <div class="value" id="wrong">0</div>
-                </div>
-                <div class="stat-card">
-                    <h3>🎯 دقیقیت</h3>
-                    <div class="value" id="accuracy">100</div>
-                    <div class="unit">%</div>
-                </div>
-            </div>
+<div id="menuBtn" onclick="toggleMenu()">⋮</div>
 
-            <div class="level-section">
-                <div class="level-info">
-                    <div class="level-badge" id="levelBadge">🌟 سطح 1</div>
-                    <div class="level-badge" id="nextLevelInfo">🎯 بل سطح: 100 نمرې</div>
-                </div>
-                <div class="progress-bar-container">
-                    <div class="progress-bar" id="progressBar" style="width: 0%">0%</div>
-                </div>
-            </div>
+<div id="menu">
 
-            <div class="target-section">
-                <div class="target-label">📝 لاندې لفظ ټایپ کړئ:</div>
-                <div class="target-word" id="targetWord">سلام</div>
-            </div>
+<div id="levels"></div>
 
-            <div class="input-area">
-                <input type="text" id="userInput" placeholder="دلته ټایپ پیل کړئ..." autocomplete="off">
-            </div>
+<button id="resetBtn" onclick="resetProgress()">ریسیټ</button>
 
-            <div id="message" class="message" style="display: none;"></div>
+</div>
 
-            <div class="keyboard">
-                <div class="keyboard-row">
-                    <div class="key">ق</div>
-                    <div class="key">و</div>
-                    <div class="key">ع</div>
-                    <div class="key">ر</div>
-                    <div class="key">ت</div>
-                    <div class="key">ی</div>
-                    <div class="key">ه</div>
-                    <div class="key">ا</div>
-                    <div class="key">س</div>
-                    <div class="key">د</div>
-                    <div class="key">ف</div>
-                    <div class="key">گ</div>
-                    <div class="key">ګ</div>
-                    <div class="key">ل</div>
-                </div>
-                <div class="keyboard-row">
-                    <div class="key">ښ</div>
-                    <div class="key">ش</div>
-                    <div class="key">ړ</div>
-                    <div class="key">ځ</div>
-                    <div class="key">ج</div>
-                    <div class="key">چ</div>
-                    <div class="key">ح</div>
-                    <div class="key">خ</div>
-                    <div class="key">ص</div>
-                    <div class="key">ض</div>
-                    <div class="key">ط</div>
-                    <div class="key">ظ</div>
-                    <div class="key">څ</div>
-                    <div class="key">ږ</div>
-                </div>
-                <div class="keyboard-row">
-                    <div class="key">ب</div>
-                    <div class="key">پ</div>
-                    <div class="key">ت</div>
-                    <div class="key">ټ</div>
-                    <div class="key">ث</div>
-                    <div class="key">ج</div>
-                    <div class="key">چ</div>
-                    <div class="key">څ</div>
-                    <div class="key">ح</div>
-                    <div class="key">خ</div>
-                    <div class="key">د</div>
-                    <div class="key">ذ</div>
-                    <div class="key">ر</div>
-                    <div class="key">ز</div>
-                </div>
-                <div class="keyboard-row">
-                    <div class="key">ژ</div>
-                    <div class="key">ږ</div>
-                    <div class="key">ښ</div>
-                    <div class="key">ړ</div>
-                    <div class="key">ن</div>
-                    <div class="key">م</div>
-                    <div class="key">ی</div>
-                    <div class="key">ې</div>
-                    <div class="key">ۍ</div>
-                    <div class="key">ئ</div>
-                    <div class="key special wide" id="spaceKey">␣ فاصله</div>
-                    <div class="key special" id="clearKey">⌫ پاکول</div>
-                </div>
-            </div>
+<h1>پښتو ټايپنګ زده کړه</h1>
 
-            <div class="control-buttons">
-                <button class="btn btn-primary" id="resetBtn">🔄 بیا پیلول</button>
-            </div>
+<button id="startBtn" onclick="start()">پیل</button>
 
-            <div class="shortcuts">
-                💡 چټک لارې: <kbd>Enter</kbd> تصدیق کول • <kbd>Ctrl + Enter</kbd> بل لفظ • <kbd>Esc</kbd> پاکول
-            </div>
-        </div>
-    </div>
+<div id="main">
 
-    <script>
-        // Words database organized by levels
-        const levels = [
-            { name: "🌟 سطح 1 - اسانه", words: ["سلام", "ښه", "کتاب", "قلم", "کور", "باغ", "ورور", "خور"], required: 0 },
-            { name: "🌟🌟 سطح 2 - متوسط", words: ["ښوونځی", "استاد", "زده کونکی", "پښتو", "ملګری", "خوشحاله", "ښکلی", "نوی"], required: 100 },
-            { name: "🌟🌟🌟 سطح 3 - پرمختللی", words: ["تکلیف", "مهرباني", "مننه", "بخښنه", "ډوډۍ", "اوبه", "سپین", "تور"], required: 250 },
-            { name: "🌟🌟🌟🌟 سطح 4 - ماهر", words: ["روغتون", "پوهنتون", "کتابتون", "انجینر", "ډاکتر", "معلم", "فکر", "علم"], required: 450 },
-            { name: "🌟🌟🌟🌟🌟 سطح 5 - استاد", words: ["تکنالوژي", "پرمختګ", "مدنیت", "تاریخ", "ادبیات", "فلسفه", "ستوری", "ځواک"], required: 700 }
-        ];
-        
-        let currentLevel = 0;
-        let currentWord = "";
-        let score = 0;
-        let correctCount = 0;
-        let wrongCount = 0;
-        let gameStarted = false;
-        
-        // DOM elements
-        const targetWordEl = document.getElementById("targetWord");
-        const userInput = document.getElementById("userInput");
-        const scoreEl = document.getElementById("score");
-        const correctEl = document.getElementById("correct");
-        const wrongEl = document.getElementById("wrong");
-        const accuracyEl = document.getElementById("accuracy");
-        const levelBadge = document.getElementById("levelBadge");
-        const nextLevelInfo = document.getElementById("nextLevelInfo");
-        const progressBar = document.getElementById("progressBar");
-        const messageDiv = document.getElementById("message");
-        
-        // Load random word from current level
-        function loadNewWord() {
-            const levelWords = levels[currentLevel].words;
-            const randomIndex = Math.floor(Math.random() * levelWords.length);
-            currentWord = levelWords[randomIndex];
-            targetWordEl.innerHTML = currentWord;
-            userInput.value = "";
-            hideMessage();
-            userInput.focus();
-        }
-        
-        // Update UI
-        function updateUI() {
-            scoreEl.innerHTML = score;
-            correctEl.innerHTML = correctCount;
-            wrongEl.innerHTML = wrongCount;
-            
-            // Calculate accuracy
-            const total = correctCount + wrongCount;
-            const accuracy = total === 0 ? 100 : Math.round((correctCount / total) * 100);
-            accuracyEl.innerHTML = accuracy;
-            
-            // Update level info
-            levelBadge.innerHTML = levels[currentLevel].name;
-            
-            // Update progress to next level
-            const currentLevelRequired = levels[currentLevel].required;
-            const nextLevelRequired = currentLevel + 1 < levels.length ? levels[currentLevel + 1].required : levels[currentLevel].required;
-            const progressPercent = Math.min(100, Math.round((score / nextLevelRequired) * 100));
-            progressBar.style.width = `${progressPercent}%`;
-            progressBar.innerHTML = `${progressPercent}%`;
-            
-            if (currentLevel + 1 < levels.length) {
-                const needed = levels[currentLevel + 1].required - score;
-                if (needed > 0) {
-                    nextLevelInfo.innerHTML = `🎯 بل سطح: ${needed} نمرې پاتې دي`;
-                } else {
-                    nextLevelInfo.innerHTML = `🎉 بل سطح ته تګ لپاره چمتو یاست!`;
-                }
-            } else {
-                nextLevelInfo.innerHTML = `🏆 ماکسیمم سطح ته ورسیدل!`;
-            }
-        }
-        
-        // Check level up
-        function checkLevelUp() {
-            if (currentLevel + 1 < levels.length) {
-                const nextLevelRequired = levels[currentLevel + 1].required;
-                if (score >= nextLevelRequired) {
-                    currentLevel++;
-                    showMessage(`🎉 مبارک شه! ${levels[currentLevel].name} ته لاړ شئ! 🎉`, "success");
-                    loadNewWord();
-                    updateUI();
-                    return true;
-                }
-            }
-            return false;
-        }
-        
-        // Show message
-        function showMessage(text, type) {
-            messageDiv.innerHTML = text;
-            messageDiv.className = `message ${type}`;
-            messageDiv.style.display = "block";
-            setTimeout(() => {
-                if (messageDiv.style.display === "block") {
-                    hideMessage();
-                }
-            }, 2000);
-        }
-        
-        function hideMessage() {
-            messageDiv.style.display = "none";
-            messageDiv.className = "message";
-        }
-        
-        // Check answer
-        function checkAnswer() {
-            if (!gameStarted) {
-                gameStarted = true;
-                showMessage("🎯 پیل شو! نیکمرغه اوسئ!", "info");
-            }
-            
-            const userAnswer = userInput.value.trim();
-            
-            if (userAnswer === "") {
-                showMessage("⚠️ مهرباني وکړئ یو څه ولیکئ!", "error");
-                return;
-            }
-            
-            if (userAnswer === currentWord) {
-                // Correct answer
-                const pointsGained = 10 + (currentLevel * 2);
-                score += pointsGained;
-                correctCount++;
-                showMessage(`✅ سم دی! +${pointsGained} نمرې! ډیر ښه!`, "success");
-                updateUI();
-                
-                // Check for level up
-                const leveledUp = checkLevelUp();
-                
-                // Auto load next word
-                setTimeout(() => {
-                    loadNewWord();
-                    if (leveledUp) {
-                        updateUI();
-                    }
-                }, 800);
-            } else {
-                // Wrong answer
-                wrongCount++;
-                const penalty = 3 + currentLevel;
-                score = Math.max(0, score - penalty);
-                showMessage(`❌ غلط دی! سم لفظ: "${currentWord}" دی. -${penalty} نمرې`, "error");
-                updateUI();
-                
-                // Clear input after delay
-                setTimeout(() => {
-                    userInput.value = "";
-                    userInput.focus();
-                }, 1000);
-            }
-        }
-        
-        // Reset game
-        function resetGame() {
-            if (confirm("آیا تاسو ډاډه یاست چې ټولې نمرې بیا پیل کړئ؟")) {
-                currentLevel = 0;
-                score = 0;
-                correctCount = 0;
-                wrongCount = 0;
-                gameStarted = true;
-                updateUI();
-                loadNewWord();
-                showMessage("🔄 لوبه بیا پیل شوه! نیکمرغه اوسئ!", "info");
-                userInput.focus();
-            }
-        }
-        
-        // Next word (skip)
-        function nextWord() {
-            loadNewWord();
-            showMessage("⏭️ بل لفظ ته لاړ شئ!", "info");
-            userInput.focus();
-        }
-        
-        // Clear input
-        function clearInput() {
-            userInput.value = "";
-            userInput.focus();
-        }
-        
-        // Setup virtual keyboard
-        function setupVirtualKeyboard() {
-            const keys = document.querySelectorAll('.key:not(.special)');
-            const spaceKey = document.getElementById('spaceKey');
-            const clearKey = document.getElementById('clearKey');
-            
-            keys.forEach(key => {
-                key.addEventListener('click', () => {
-                    userInput.value += key.innerText;
-                    userInput.focus();
-                    if (!gameStarted) {
-                        gameStarted = true;
-                        showMessage("🎯 پیل شو! نیکمرغه اوسئ!", "info");
-                    }
-                });
-            });
-            
-            if (spaceKey) {
-                spaceKey.addEventListener('click', () => {
-                    userInput.value += ' ';
-                    userInput.focus();
-                });
-            }
-            
-            if (clearKey) {
-                clearKey.addEventListener('click', () => {
-                    userInput.value = userInput.value.slice(0, -1);
-                    userInput.focus();
-                });
-            }
-        }
-        
-        // Setup keyboard shortcuts
-        function setupKeyboardShortcuts() {
-            document.addEventListener('keydown', (e) => {
-                // Enter key - check answer
-                if (e.key === 'Enter' && !e.ctrlKey) {
-                    e.preventDefault();
-                    checkAnswer();
-                }
-                // Ctrl + Enter - next word
-                else if (e.key === 'Enter' && e.ctrlKey) {
-                    e.preventDefault();
-                    nextWord();
-                }
-                // Escape - clear input
-                else if (e.key === 'Escape') {
-                    e.preventDefault();
-                    clearInput();
-                }
-                // Any key starts the game automatically
-                else if (!gameStarted && e.key.length === 1 && !e.ctrlKey && !e.altKey) {
-                    gameStarted = true;
-                    showMessage("🎯 پیل شو! نیکمرغه اوسئ!", "info");
-                }
-            });
-        }
-        
-        // Initialize game
-        function init() {
-            gameStarted = true; // Auto-start, no button needed
-            loadNewWord();
-            updateUI();
-            setupVirtualKeyboard();
-            setupKeyboardShortcuts();
-            userInput.focus();
-            
-            document.getElementById('resetBtn').addEventListener('click', resetGame);
-        }
-        
-        // Start
-        init();
-    </script>
+<div id="stageInfo"></div>
+
+<div class="stats">
+چټکتیا: <span id="speed">0</span> |
+سمون: <span id="accuracy">100</span>٪
+</div>
+
+<div id="lessonText"></div>
+
+<div id="typedText"></div>
+
+<input id="input" autofocus style="opacity:0;height:0">
+
+<div class="keyboard" id="keyboard"></div>
+
+</div>
+
+<script>
+
+/* SOUNDS */
+
+const correctSound=new Audio("https://actions.google.com/sounds/v1/foley/keyboard_type_1.ogg")
+const wrongSound=new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg")
+
+/* STEP KEYS */
+
+const stageKeys=[
+
+["ش","س","ی","ب","ت","ن","م","ک"],
+
+["ش","س","ی","ب","ت","ن","م","ک","ل","ا"],
+
+["ش","س","ی","ب","ت","ن","م","ک","ل","ا","ر","د"],
+
+["ش","س","ی","ب","ت","ن","م","ک","ل","ا","ر","د","و","ه"],
+
+["ش","س","ی","ب","ت","ن","م","ک","ل","ا","ر","د","و","ه","ف","ق"],
+
+["ش","س","ی","ب","ت","ن","م","ک","ل","ا","ر","د","و","ه","ف","ق","ګ","غ"],
+
+["ش","س","ی","ب","ت","ن","م","ک","ل","ا","ر","د","و","ه","ف","ق","ګ","غ","ظ","ط"],
+
+["ش","س","ی","ب","ت","ن","م","ک","ل","ا","ر","د","و","ه","ف","ق","ګ","غ","ظ","ط","ز","ړ"],
+
+["ش","س","ی","ب","ت","ن","م","ک","ل","ا","ر","د","و","ه","ف","ق","ګ","غ","ظ","ط","ز","ړ","ذ"],
+
+["ش","س","ی","ب","ت","ن","م","ک","ل","ا","ر","د","و","ه","ف","ق","ګ","غ","ظ","ط","ز","ړ","ذ"]
+
+]
+
+/* KEYBOARD LAYOUT */
+
+const layout=[
+
+["ض","ص","ث","ق","ف","غ","ع","ه","خ","ح","ج","چ"],
+
+["ش","س","ی","ب","ل","ا","ت","ن","م","ک","ګ"],
+
+["ظ","ط","ز","ر","ذ","د","ړ","و"]
+
+]
+
+/* CREATE KEYBOARD */
+
+const keyboard=document.getElementById("keyboard")
+
+layout.forEach(row=>{
+
+let rowDiv=document.createElement("div")
+rowDiv.className="row"
+
+row.forEach(letter=>{
+
+let key=document.createElement("div")
+
+key.className="key"
+key.innerText=letter
+key.id="key-"+letter
+
+rowDiv.appendChild(key)
+
+})
+
+keyboard.appendChild(rowDiv)
+
+})
+
+/* LESSONS */
+
+let lessons=[]
+
+for(let s=0;s<10;s++){
+
+let level=[]
+
+for(let i=0;i<10;i++){
+
+let line=""
+
+for(let k=0;k<8;k++){
+
+let letter=stageKeys[s][Math.floor(Math.random()*stageKeys[s].length)]
+
+line+=letter+" "
+
+}
+
+level.push(line.trim())
+
+}
+
+lessons.push(level)
+
+}
+
+/* PROGRESS */
+
+let level=localStorage.getItem("level")?parseInt(localStorage.getItem("level")):0
+let stage=localStorage.getItem("stage")?parseInt(localStorage.getItem("stage")):0
+
+let text=""
+let position=0
+let startTime=null
+let errors=0
+let total=0
+let typed=""
+
+const input=document.getElementById("input")
+
+/* START */
+
+function start(){
+
+document.getElementById("startBtn").style.display="none"
+document.getElementById("main").style.display="block"
+document.getElementById("menuBtn").style.display="block"
+
+createMenu()
+
+loadStage()
+
+}
+
+/* MENU */
+
+function createMenu(){
+
+const levelsDiv=document.getElementById("levels")
+
+levelsDiv.innerHTML=""
+
+for(let l=0;l<10;l++){
+
+let levelBtn=document.createElement("button")
+
+levelBtn.className="levelBtn"
+levelBtn.innerText="کچه "+(l+1)
+
+levelBtn.onclick=function(){
+
+let stageList=document.getElementById("stageList"+l)
+
+stageList.style.display=stageList.style.display=="block"?"none":"block"
+
+}
+
+levelsDiv.appendChild(levelBtn)
+
+let stageList=document.createElement("div")
+stageList.id="stageList"+l
+stageList.style.display="none"
+
+for(let s=0;s<10;s++){
+
+let sBtn=document.createElement("button")
+
+sBtn.className="stageBtn"
+sBtn.innerText="مرحله "+(s+1)
+
+sBtn.onclick=function(){
+
+level=l
+stage=s
+
+localStorage.setItem("level",level)
+localStorage.setItem("stage",stage)
+
+loadStage()
+
+toggleMenu()
+
+}
+
+stageList.appendChild(sBtn)
+
+}
+
+levelsDiv.appendChild(stageList)
+
+}
+
+}
+
+/* LOAD STAGE */
+
+function loadStage(){
+
+text=lessons[stage][level]
+
+position=0
+errors=0
+total=0
+typed=""
+
+startTime=Date.now()
+
+updateStage()
+
+render()
+
+input.focus()
+
+}
+
+/* UPDATE */
+
+function updateStage(){
+
+document.getElementById("stageInfo").innerText="مرحله "+(stage+1)+" | کچه "+(level+1)
+
+}
+
+/* RENDER */
+
+function render(){
+
+let html=""
+
+for(let i=0;i<text.length;i++){
+
+if(i<position) html+=`<span class="correct">${text[i]}</span>`
+
+else if(i==position) html+=`<span style="background:#22c55e;color:white">${text[i]}</span>`
+
+else html+=text[i]
+
+}
+
+document.getElementById("lessonText").innerHTML=html
+document.getElementById("typedText").innerText=typed
+
+highlightKey(text[position])
+
+}
+
+/* HIGHLIGHT KEY */
+
+function highlightKey(letter){
+
+document.querySelectorAll(".key").forEach(k=>k.classList.remove("active"))
+
+let key=document.getElementById("key-"+letter)
+
+if(key) key.classList.add("active")
+
+}
+
+/* TYPING */
+
+input.addEventListener("keydown",function(e){
+
+if(e.key==="Backspace"){
+
+if(position>0){
+
+position--
+typed=typed.slice(0,-1)
+
+render()
+
+}
+
+return
+
+}
+
+if(!text[position]) return
+
+total++
+
+typed+=e.key
+
+if(e.key===text[position]){
+
+correctSound.currentTime=0
+correctSound.play()
+
+position++
+
+}else{
+
+wrongSound.currentTime=0
+wrongSound.play()
+
+errors++
+
+}
+
+updateStats()
+
+if(position>=text.length) nextStage()
+
+render()
+
+})
+
+/* NEXT */
+
+function nextStage(){
+
+level++
+
+if(level>=10){
+
+level=0
+stage++
+
+}
+
+if(stage>=10){
+
+alert("مبارک! تاسو ټولې مرحلې بشپړې کړې!")
+
+stage=0
+level=0
+
+}
+
+localStorage.setItem("stage",stage)
+localStorage.setItem("level",level)
+
+loadStage()
+
+}
+
+/* STATS */
+
+function updateStats(){
+
+let time=(Date.now()-startTime)/60000
+
+let wpm=Math.round((position/5)/time)
+
+if(!isFinite(wpm)) wpm=0
+
+document.getElementById("speed").innerText=wpm
+
+let accuracy=Math.max(0,Math.round((1-errors/total)*100))
+
+if(!isFinite(accuracy)) accuracy=100
+
+document.getElementById("accuracy").innerText=accuracy
+
+}
+
+/* MENU */
+
+function toggleMenu(){
+
+let m=document.getElementById("menu")
+
+m.style.display=m.style.display=="block"?"none":"block"
+
+}
+
+/* RESET */
+
+function resetProgress(){
+
+localStorage.clear()
+
+stage=0
+level=0
+
+loadStage()
+
+}
+
+document.body.addEventListener("click",()=>input.focus())
+
+</script>
+
 </body>
 </html>
